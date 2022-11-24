@@ -1,0 +1,15 @@
+.main-background{
+   -fx-background-image: url("image/page_1.jpg");
+}
+.side-background{
+   -fx-background-image: url("image/sidepage.png");
+}
+.button{
+   -fx-background-color: #08142A;
+}
+.button:hover{
+   -fx-background-color: #2c416d;
+}
+.button1:hover{
+   -fx-background-color: #bbccff
+}
