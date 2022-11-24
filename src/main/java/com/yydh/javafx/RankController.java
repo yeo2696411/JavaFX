@@ -32,4 +32,19 @@ public class RankController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private Button guideBtn;
+    public void guideScene() throws IOException {
+        try {
+            Parent nextScene
+                    = FXMLLoader.load(getClass().getResource("Guide.fxml"));
+            Scene scene = new Scene(nextScene);
+
+            Stage primaryStage = (Stage) guideBtn.getScene().getWindow();
+            primaryStage.setScene(scene);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

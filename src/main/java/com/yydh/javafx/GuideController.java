@@ -12,8 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
-
+public class GuideController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
@@ -34,17 +33,19 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private Button guideBtn;
-    public void guideScene() throws IOException {
+    private Button mainBtn;
+    public void mainScene() throws IOException {
         try {
             Parent nextScene
-                    = FXMLLoader.load(getClass().getResource("Guide.fxml"));
+                    = FXMLLoader.load(getClass().getResource("Main.fxml"));
             Scene scene = new Scene(nextScene);
 
-            Stage primaryStage = (Stage) guideBtn.getScene().getWindow();
+            Stage primaryStage = (Stage) mainBtn.getScene().getWindow();
             primaryStage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
 }
