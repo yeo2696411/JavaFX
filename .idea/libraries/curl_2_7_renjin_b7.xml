@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="curl-2.7-renjin-b7">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/main/java/com/yydh/javafx/mvn/curl-2.7-renjin-b7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
