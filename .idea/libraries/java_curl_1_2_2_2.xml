@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="java-curl-1.2.2.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/main/java/com/yydh/javafx/mvn/java-curl-1.2.2.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

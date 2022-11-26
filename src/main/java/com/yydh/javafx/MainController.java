@@ -7,8 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-
-import
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,6 +14,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 
 public class MainController implements Initializable {
 
@@ -55,68 +58,35 @@ public class MainController implements Initializable {
     }
 
     public static void main(String[] args) {
+        String key = "ARHV0dGRBv97jYLvWQed81svMFj5CfrU9ADtwJgG";
+        String result = "";
 
-        try {
 
+        try{
 
-            
+            URL url = new URL("https://open-api.bser.io/v1/rank/top/13/1");
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/json"); // Content-Type 지정
+            conn.setDoOutput(true); // 출력 가능 상태로 변경
+            conn.connect();
 
-        String url = "myurl"
-        String authorizationKey = "Basic {인증키}";
-        URL urlObject = null;
-        HttpURLConnection con = null;
-        StringBuffer response = new StringBuffer();
-
-        try {
-            urlObject = new URL(url);
-            con = (HttpURLConnection) urlObject.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Authorization", authorizationKey);
-
-            int responseCode = con.getResponseCode();
-            System.out.println("Response Code : " + responseCode);
-
-            BufferedReader iny = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String output;
-
-            while ((output = iny.readLine()) != null) {
-                response.append(output);
+// 데이터  읽어오기
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            String line = "";
+            while((line = br.readLine()) != null) {
+                sb.append(line); // StringBuilder 사용시 객체를 계속 생성하지 않고 하나의 객체릂 수정하므로 더 빠름.
             }
-            iny.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            conn.disconnect();
 
+// JSON Parsing
+            JSONObject jsonObj = (JSONObject) new JSONParser().parse(sb.toString());
 
-        try {
-            JSONObject json = new JSONObject(response.toString());
-            JSONObject dataJsonObject = json.getJSONObject("data");
-            lastPage = Integer.valueOf(dataJsonObject.optString("last_page"));
-            JSONArray jsonArray = dataJsonObject.getJSONArray("docs");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
+            jsonObj.get("name"); // 이런 방식으로 데이터 꺼낼 수 있음.
 
-                FCStockNewsItem item = new FCStockNewsItem();
-                item.sTitle_kor = jsonObject.optString("title", "");
-                item.content = jsonObject.optString("content","");
-//                item.sProffer = sProffer.trim();
-//                item.sNews_Seq = sNews_Seq.trim();
-//                item.sDate = sDate.trim();
-//                item.sTime = sTime.trim();
-//                item.sTitle_eng = sTitle_eng.trim();
-
-//                item.sTrans_yn = sTrans_yn.trim();
-
-                itemList.add(item);
-            }
-            adapter.notifyDataSetChanged();
-
-        } catch (JSONException e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
