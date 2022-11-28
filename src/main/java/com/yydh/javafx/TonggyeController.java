@@ -12,26 +12,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GuideController implements Initializable {
+public class TonggyeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
-
-    @FXML
-    private Button rankingBtn;
-    public void changeScene() throws IOException {
-        try {
-            Parent nextScene
-                    = FXMLLoader.load(getClass().getResource("Rank.fxml"));
-            Scene scene = new Scene(nextScene);
-
-            Stage primaryStage = (Stage) rankingBtn.getScene().getWindow();
-            primaryStage.setScene(scene);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @FXML
     private Button mainBtn;
     public void mainScene() throws IOException {
@@ -47,16 +31,15 @@ public class GuideController implements Initializable {
         }
     }
 
-
     @FXML
-    private Button tonggyeBtn;
-    public void tonggyeScene() throws IOException {
+    private Button rankingBtn;
+    public void changeScene() throws IOException {
         try {
             Parent nextScene
-                    = FXMLLoader.load(getClass().getResource("tonggye.fxml"));
+                    = FXMLLoader.load(getClass().getResource("Rank.fxml"));
             Scene scene = new Scene(nextScene);
 
-            Stage primaryStage = (Stage) tonggyeBtn.getScene().getWindow();
+            Stage primaryStage = (Stage) rankingBtn.getScene().getWindow();
             primaryStage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();
