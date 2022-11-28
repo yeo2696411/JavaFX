@@ -10,15 +10,19 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.http.HttpResponse;
 import java.util.ResourceBundle;
+import java.net.http.HttpClient;
+
+import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 
 public class MainController implements Initializable {
 
@@ -57,37 +61,42 @@ public class MainController implements Initializable {
         }
     }
 
-    public static void main(String[] args) {
-        String key = "ARHV0dGRBv97jYLvWQed81svMFj5CfrU9ADtwJgG";
-        String result = "";
+    public void get(String strUrl) {
+        try {
+            URL url = new URL(strUrl);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setConnectTimeout(5000); //서버에 연결되는 Timeout 시간 설정
+            con.setReadTimeout(5000); // InputStream 읽어 오는 Timeout 시간 설정
+            con.addRequestProperty("x-api-key", RestTestCommon.API_KEY); //key값 설정
+
+            con.setRequestMethod("GET");
 
 
-        try{
 
-            URL url = new URL("https://open-api.bser.io/v1/rank/top/13/1");
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+//URLConnection에 대한 doOutput 필드값을 지정된 값으로 설정한다. URL 연결은 입출력에 사용될 수 있다. URL 연결을 출력용으로 사용하려는 경우 DoOutput 플래그를 true로 설정하고, 그렇지 않은 경우는 false로 설정해야 한다. 기본값은 false이다.
 
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Content-Type", "application/json"); // Content-Type 지정
-            conn.setDoOutput(true); // 출력 가능 상태로 변경
-            conn.connect();
+            con.setDoOutput(false);
 
-// 데이터  읽어오기
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
             StringBuilder sb = new StringBuilder();
-            String line = "";
-            while((line = br.readLine()) != null) {
-                sb.append(line); // StringBuilder 사용시 객체를 계속 생성하지 않고 하나의 객체릂 수정하므로 더 빠름.
+            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                //Stream을 처리해줘야 하는 귀찮음이 있음.
+                BufferedReader br = new BufferedReader(
+                        new InputStreamReader(con.getInputStream(), "utf-8"));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+                br.close();
+                System.out.println("" + sb.toString());
+            } else {
+                System.out.println(con.getResponseMessage());
             }
-            conn.disconnect();
 
-// JSON Parsing
-            JSONObject jsonObj = (JSONObject) new JSONParser().parse(sb.toString());
-
-            jsonObj.get("name"); // 이런 방식으로 데이터 꺼낼 수 있음.
-
-        }catch(Exception e){
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println(e.toString());
         }
     }
+
+
+
 }
